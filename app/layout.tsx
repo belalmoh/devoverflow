@@ -5,7 +5,6 @@ import localFont from "next/font/local";
 
 import "./globals.css";
 import ThemeProvider from "@/context/Theme";
-
 const inter = localFont({
     variable: "--font-inter",
     src: "../public/fonts/InterVF.ttf",
@@ -19,7 +18,7 @@ const spaceGrotesk = localFont({
 });
 
 export const metadata: Metadata = {
-    title: "Dev Overflow",
+    title: "DevOverflow",
     description:
         "A community-driven platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers from around the world. Explore topics in web development, mobile app development, algorithms, data structures, and more.",
     icons: {
