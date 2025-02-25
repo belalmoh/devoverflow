@@ -5,6 +5,9 @@ import localFont from "next/font/local";
 
 import "./globals.css";
 import ThemeProvider from "@/context/Theme";
+import { Toaster } from "sonner";
+import { auth } from "@/auth";
+
 const inter = localFont({
     variable: "--font-inter",
     src: "../public/fonts/InterVF.ttf",
@@ -26,11 +29,9 @@ export const metadata: Metadata = {
     },
 };
 
-export default function RootLayout({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
+    const session = await auth();
+
     return (
         <html lang="en" suppressHydrationWarning>
             <body
@@ -44,7 +45,10 @@ export default function RootLayout({
                 >
                     {children}
                 </ThemeProvider>
+                <Toaster />
             </body>
         </html>
     );
-}
+};
+
+export default RootLayout;
