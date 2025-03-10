@@ -11,23 +11,30 @@ import { SheetClose } from "@/components/ui/sheet";
 
 const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
     const pathname = usePathname();
-    const userId = 1;
+    const userId = "1";
 
     return (
         <>
             {sideBarLinks.map((link) => {
                 const isActive =
-                    (link.route.length > 1 && pathname.includes(link.route)) ||
+                    (typeof link.route === "string" &&
+                        link.route.length > 1 &&
+                        pathname.includes(link.route)) ||
                     pathname === link.route;
 
                 if (link.route === ROUTES.PROFILE) {
-                    if (userId) link.route = `${link.route}/${userId}`;
+                    if (userId) link.route = ROUTES.PROFILE(userId);
                     else return null;
                 }
 
+                const routeValue =
+                    typeof link.route === "function"
+                        ? link.route(userId)
+                        : link.route;
+
                 const LinkComponent = (
                     <Link
-                        href={link.route}
+                        href={routeValue}
                         key={link.label}
                         className={cn(
                             isActive
@@ -55,9 +62,11 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
                 );
 
                 return isMobileNav ? (
-                    <SheetClose asChild>{LinkComponent}</SheetClose>
+                    <SheetClose asChild key={link.label}>
+                        {LinkComponent}
+                    </SheetClose>
                 ) : (
-                    <React.Fragment key={link.route}>
+                    <React.Fragment key={link.label}>
                         {LinkComponent}
                     </React.Fragment>
                 );
